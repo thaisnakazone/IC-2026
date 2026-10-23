@@ -1,4 +1,4 @@
-"""Gera os dados do dashboard (etapa 2) e a edição em arquivo único.
+"""Gera os dados do dashboard e a edição em arquivo único.
 
 Rode depois de `src/build_survival_v2.py`:
 
@@ -140,7 +140,7 @@ def main() -> None:
         "meta": {
             "title": "Sobreviver para crescer",
             "updated": date.today().isoformat(),
-            "stage": "Etapa 2 · dados das APIs",
+            "stage": "Dados das APIs oficiais",
             "factors_total": len(meta),
             "factors_tested": n_tested,
             "panel": validation["panel"],
