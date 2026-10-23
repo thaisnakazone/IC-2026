@@ -1,146 +1,113 @@
-# IC 2026 — painel de tributação, ambiente empresarial e PMEs
+# IC 2026 — Sobrevivência de empresas empregadoras: Brasil × OCDE
 
-Segundo ciclo técnico da iniciação científica **“Análise comparativa da
-complexidade tributária e seus impactos na competitividade de pequenas e médias
-empresas”**.
+> 📊 **Acesse o dashboard:** [thaisnakazone.github.io/IC-2026](https://thaisnakazone.github.io/IC-2026/)
 
-## Escopo desta versão
+Repositório de dados, código e dashboard da iniciação científica **“Complexidade tributária e sobrevivência de empresas empregadoras: o Brasil em perspectiva comparada com países da OCDE utilizando ciência de dados”**, desenvolvida no Programa de Iniciação Científica 2026 da Fatec Sebrae.
 
-- Países: Brasil, México, Colômbia, Costa Rica, Portugal, Espanha, Reino Unido,
-  Canadá, Estônia e Coreia do Sul.
-- Período do painel principal: 2013–2024.
-- Recorte histórico de complexidade tributária: 2013–2019.
-- Unidade de observação: país-ano.
-- Fontes: OECD SDMX API e World Bank API v2.
-- Saídas: dados brutos normalizados, painel principal contemporâneo, recorte
-  histórico, cobertura, validação automática, análise exploratória, modelagem
-  de painel, gráficos e dicionários de dados em Excel.
+## Equipe
 
-## Estrutura
+- **Paulo Futagawa** — [@pfutagawa](https://github.com/pfutagawa)
+- **Thaís Nakazone** — [@thaisnakazone](https://github.com/thaisnakazone)
 
-```text
-config/              seleção de países, período e códigos dos indicadores
-src/build_panel.py   extração, transformação, integração e validação
-src/analyze_panel.py análise exploratória, tabelas e visualizações
-src/model_panel.py   efeitos fixos, inferência e testes de sensibilidade
-data/raw/            respostas normalizadas das APIs
-data/processed/      painel e diagnósticos de qualidade
-analysis/            relatório exploratório, tabelas e figuras
-modeling/            resultados, diagnósticos e figuras dos modelos
-docs/                notas metodológicas
-outputs/             dicionário e painel em Excel
-```
+**Orientadora:** Profa. Nathane de Castro<br>
+**Curso:** Ciência de Dados para Negócios — Fatec Sebrae
+
+## Pergunta de pesquisa
+
+Quais fatores macroeconômicos, institucionais, financeiros, tecnológicos e tributários estão associados à sobrevivência em três anos das empresas empregadoras no Brasil e em países da Organização para a Cooperação e Desenvolvimento Econômico (OCDE)?
+
+## O que o dashboard mostra
+
+| Aba | Conteúdo |
+|---|---|
+| Comparação | Taxas de sobrevivência por país em cinco recortes, com a posição do Brasil |
+| Fatores | Relação de cada um dos 22 fatores com a sobrevivência e a consistência do sinal entre recortes |
+| Painel | Coeficientes das regressões com efeitos fixos (intervalo de confiança de 95%) |
+| Brasil: IBGE × OCDE | Comparação das duas fontes para a coorte brasileira de 2017 |
+| Método e cobertura | Fontes, definições, critérios e cobertura dos dados |
+
+O dashboard é uma página estática (HTML, CSS e JavaScript) e não precisa de servidor. O tema claro ou escuro acompanha o sistema.
+
+## Dados
+
+Os dados foram obtidos em 7 de outubro de 2026, de forma automatizada, nas APIs oficiais:
+
+- **OCDE (SDMX):**
+  - demografia de empresas empregadoras, com sobrevivência de 1 a 3 anos por país, ano, setor e porte (`DF_BD_EMP_S`);
+  - estatísticas de receita tributária (`DF_RSGLOBAL`);
+  - alíquotas do imposto de renda das empresas (`DF_CIT`).
+- **Banco Mundial (API v2):** World Development Indicators, Worldwide Governance Indicators e Doing Business.
+- **IBGE:** Demografia das Empresas e Estatísticas de Empreendedorismo 2022 (Tabela 2.1). É a fonte da sobrevivência brasileira em 3 anos, que a OCDE não publica.
+
+Os 22 fatores se dividem em cinco dimensões e são sempre medidos **antes** do nascimento das coortes:
+
+| Dimensão | Fatores |
+|---|---|
+| Macroeconômica | crescimento do PIB, inflação, PIB per capita, desemprego |
+| Financeira | crédito ao setor privado, taxa real de juros, recuperação na insolvência |
+| Institucional | qualidade regulatória, Estado de direito, efetividade do governo, tempo para abrir empresa |
+| Tecnológica | usuários de internet, gasto em P&D |
+| Tributária | carga total, composição da receita, receita e alíquota do IRPJ, carga sobre o lucro, horas e número de pagamentos para cumprir obrigações |
+
+O dicionário completo está em `config/survival_v2_data_dictionary.csv`.
+
+## Método, em resumo
+
+- **Recortes:**
+  - A1: coorte de 2017, sobrevivência em 3 anos, Brasil pelo IBGE;
+  - A2: coortes de 2014 a 2016, antes da pandemia;
+  - B: sobrevivência em 2 anos, todos os países pela OCDE;
+  - índices ajustados por setor e por porte;
+  - painel país × coorte com 176 observações de 30 países.
+- **Estatística:**
+  - correlações de Pearson e Spearman;
+  - correção de Benjamini-Hochberg para múltiplos testes;
+  - sensibilidade com a exclusão de um país por vez;
+  - regressões com efeitos fixos de coorte e erros-padrão agrupados por país.
+- **Interpretação:** os resultados são **associações observacionais entre países**, não efeitos causais.
 
 ## Como reproduzir
 
+Requer Python 3.10 ou superior.
+
 ```bash
 python -m venv .venv
-source .venv/bin/activate        # Windows: .venv\Scripts\activate
+.venv\Scripts\activate            # Linux/macOS: source .venv/bin/activate
 pip install -r requirements.txt
-python src/build_panel.py
-python src/analyze_panel.py
-python src/model_panel.py
+
+python src/fetch_api_data.py      # 1. baixa os dados das APIs para data/raw/api/
+python src/build_survival_v2.py   # 2. monta as bases, correlações, painel e relatório
+python src/build_dashboard_v2.py  # 3. gera os dados do dashboard
+python -m unittest tests/test_survival_v2.py -v   # 4. testes de integridade
 ```
 
-As APIs não exigem chave de autenticação. Os dados são obtidos novamente a cada
-execução, por isso pequenas revisões feitas pelas instituições podem alterar os
-resultados futuros. Os arquivos em `data/raw` preservam a versão obtida nesta
-execução.
-
-## Decisões metodológicas
-
-1. O painel principal 2013–2024 utiliza carga e composição tributária, dinamismo
-   empresarial e controles macroeconômicos. O Doing Business é mantido apenas
-   no recorte histórico 2013–2019, consultado explicitamente com `source=1`.
-2. A composição tributária é mantida nas seis categorias de primeiro nível da
-   OCDE. “Tributos diretos”, “sobre trabalho” e “indiretos” são agrupamentos
-   derivados, não categorias originais completas.
-3. A densidade de novos negócios é uma aproximação do dinamismo empresarial e
-   **não** equivale à taxa de sobrevivência de PMEs.
-4. O painel permite investigar associações. Regressão observacional e
-   clustering não demonstram causalidade.
-5. Os anos de 2020 e 2021 são identificados como período excepcional; análises
-   futuras devem usar efeitos de ano e testes de sensibilidade sem esses anos.
-6. O B-READY fica fora do núcleo porque ainda não havia valor brasileiro
-   utilizável na API nesta execução e sua metodologia não é continuação direta
-   do Doing Business.
-7. A modelagem principal usa o logaritmo da densidade de novos negócios,
-   variáveis tributárias defasadas em um ano e efeitos fixos de país e ano. A
-   inferência combina erros-padrão agrupados por país e wild cluster bootstrap.
-8. Como há apenas dez países, a estabilidade entre especificações e o teste de
-   exclusão de um país por vez têm prioridade sobre um valor-p isolado.
-
-## Modelagem exploratória
-
-O modelo M3 é a especificação-base: carga tributária, participação dos tributos
-diretos e participação dos tributos sobre o trabalho, todas defasadas em um ano,
-com controles macroeconômicos e efeitos fixos. M4–M9 alteram período, desfecho,
-países e dinâmica para avaliar robustez. H1–H5 usam exclusivamente o recorte
-histórico do Doing Business.
-
-Os resultados completos estão em `modeling/relatorio_modelagem.md` e em
-`outputs/a6848e8d6df4/IC_2026_resultados_modelagem.xlsx`. As estimativas devem ser
-descritas como associações condicionais e exploratórias, não como impactos
-causais sobre PMEs.
-
-## Principais fontes
-
-- OECD SDMX API — Global Revenue Statistics:
-  https://sdmx.oecd.org/public/rest/v1/data/
-- World Bank API v2:
-  https://api.worldbank.org/v2/
-- Business Ready:
-  https://www.worldbank.org/en/businessready
-
-## Piloto de sobrevivência empresarial
-
-O projeto agora contém um produto mínimo de dashboard para o possível novo foco
-da pesquisa. O corte principal compara a sobrevivência em três anos das empresas
-empregadoras nascidas em 2017, observada em 2020, no Brasil e em 25 países da
-OCDE. A taxa brasileira vem da Demografia das Empresas do IBGE; as taxas dos
-demais países vêm da tabela oficial do *OECD Entrepreneurial Ecosystem
-Diagnostics 2025*.
-
-Para reconstruir a base e abrir o dashboard:
+Para ver o dashboard localmente:
 
 ```bash
-python src/build_survival_pilot.py
 python -m http.server 8000
 # abrir http://localhost:8000/dashboard/
 ```
 
-O dashboard é estático e não depende de servidor de aplicação. Pode ser
-publicado no GitHub Pages, Cloudflare Pages ou serviço equivalente. Os detalhes
-do esquema de dados, critérios de comparabilidade e roteiro de expansão estão
-em `docs/arquitetura_dashboard_sobrevivencia.md`.
+As APIs não exigem chave. Como as instituições revisam os dados periodicamente, uma nova extração pode trazer valores um pouco diferentes; `data/raw/api/` guarda a versão usada na pesquisa.
 
-## Etapa 2 — dados das APIs e fatores anteriores às coortes (outubro/2026)
+## Estrutura do repositório
 
-Substitui a tabela transcrita do relatório da OCDE e os escores de 2020–2023 por
-dados extraídos diretamente das APIs, com fatores explicativos anteriores às coortes.
-
-```bash
-pip install -r requirements.txt
-python src/fetch_api_data.py                # OCDE SDMX + Banco Mundial → data/raw/api/
-python src/build_survival_v2.py             # bases, correlações, painel e relatório
-python -m unittest tests/test_survival_v2.py -v
+```text
+index.html             redireciona para o dashboard
+dashboard/             dashboard publicado (index.html + assets/)
+src/                   scripts de coleta, processamento e geração do dashboard
+data/raw/              dados brutos das APIs e do IBGE
+data/processed/        bases harmonizadas e recortes analíticos
+analysis/survival_v2/  correlações, modelos, síntese da evidência e relatório técnico
+config/                dicionários de dados e fontes
+docs/                  arquitetura do dashboard
+tests/                 testes automatizados
 ```
 
-- `data/raw/api/`: respostas das APIs (sobrevivência OCDE, receita tributária e IRPJ OCDE,
-  22 indicadores do Banco Mundial/WGI/Doing Business).
-- `data/processed/survival_v2/`: fatos harmonizados, cinco cortes analíticos e painel país × coorte.
-- `analysis/survival_v2/`: correlações por desenho, modelos de painel, síntese de evidência,
-  divergência IBGE × OCDE e `relatorio_etapa2.md`.
-- `config/survival_v2_data_dictionary.csv`: dicionário dos fatores.
+A pasta `src/` também guarda o script do piloto de agosto de 2026 (`build_survival_pilot.py`), mantido como registro histórico.
 
-### Dashboard (etapa 2)
+## Fontes
 
-```bash
-python src/build_dashboard_v2.py            # gera dashboard/assets/data.js e o arquivo único
-```
-
-- `dashboard/sobrevivencia_dashboard.html`: edição em arquivo único; abre direto no navegador.
-- `dashboard/index.html` + `dashboard/assets/`: versão para hospedar (GitHub Pages etc.).
-- Abas: comparação (5 recortes), fatores (dispersão + consistência entre recortes), painel
-  (coeficientes com IC 95%), Brasil IBGE × OCDE e método & cobertura. Tema claro e escuro automáticos.
-- `dashboard/sobrevivencia_dashboard_piloto.html` fica como registro histórico do piloto de agosto.
+- OCDE — SDMX API: https://sdmx.oecd.org/public/rest/data/
+- Banco Mundial — Indicators API v2: https://api.worldbank.org/v2/
+- IBGE — Demografia das Empresas e Estatísticas de Empreendedorismo: https://www.ibge.gov.br/estatisticas/economicas/comercio/22649-demografia-das-empresas-e-estatisticas-de-empreendedorismo.html
