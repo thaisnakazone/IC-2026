@@ -1,0 +1,7 @@
+country_code,country_en,reference_year,cohort_year,survival_age_years,survival_rate_pct,series_id,population_definition,source_note
+BRA,Brazil,2018,2017,1,76.2,IBGE_EMPLOYER_2022,Employer enterprises,2017 birth cohort followed in Business Demography 2022
+BRA,Brazil,2019,2017,2,59.6,IBGE_EMPLOYER_2022,Employer enterprises,2017 birth cohort followed in Business Demography 2022
+BRA,Brazil,2020,2017,3,49.4,IBGE_EMPLOYER_2022,Employer enterprises,2017 birth cohort followed in Business Demography 2022
+BRA,Brazil,2021,2017,4,42.3,IBGE_EMPLOYER_2022,Employer enterprises,2017 birth cohort followed in Business Demography 2022
+BRA,Brazil,2022,2017,5,37.3,IBGE_EMPLOYER_2022,Employer enterprises,2017 birth cohort followed in Business Demography 2022
+BRA,Brazil,2018,2013,5,36.3,IBGE_ALL_ENTERPRISES_PRE2022,Active enterprises,Older methodology; do not connect to employer-enterprise series

@@ -1,0 +1,85 @@
+{
+  "oecd_rows_total": 55794,
+  "oecd_rows_invalid_value": 523,
+  "headline_cohorts_inconsistent": 2,
+  "activity_used": {
+    "AUT": "BTNX642",
+    "BEL": "BTNX642",
+    "BRA": "BTN",
+    "CAN": "_T",
+    "CHE": "BTNX642",
+    "COL": "BTNX642",
+    "CZE": "BTNX642",
+    "DEU": "BTNX642",
+    "DNK": "BTNX642",
+    "ESP": "BTNX642",
+    "EST": "BTNX642",
+    "FIN": "BTNX642",
+    "FRA": "BTNX642",
+    "GBR": "BTNX642",
+    "GRC": "BTNX642",
+    "HUN": "BTNX642",
+    "IRL": "BTNX642",
+    "ISL": "BTNX642",
+    "ISR": "BTN",
+    "ITA": "BTNX642",
+    "KOR": "BTN",
+    "LTU": "BTNX642",
+    "LUX": "BTNX642",
+    "LVA": "BTNX642",
+    "NLD": "BTNX642",
+    "NOR": "BTNX642",
+    "NZL": "_T",
+    "POL": "BTNX642",
+    "PRT": "BTNX642",
+    "SVK": "BTNX642",
+    "SVN": "BTNX642",
+    "SWE": "BTNX642",
+    "TUR": "BTNX642"
+  },
+  "designs": {
+    "A1": "Coorte 2017 · 3 anos (obs. 2020) · fatores 2014–2016 · Brasil pelo IBGE",
+    "A2": "Coortes 2014–2016 · 3 anos (obs. 2017–2019) · fatores 2011–2013 · pré-pandemia",
+    "B": "Coorte 2017 · 2 anos (obs. 2019) · fatores 2014–2016 · OCDE para todos, inclusive Brasil",
+    "S_sector": "Índice ajustado por setor · 3 anos (obs. 2017–2019) · fatores 2012–2015",
+    "S_size": "Índice ajustado por porte · 3 anos (obs. 2017–2019) · fatores 2012–2015"
+  },
+  "positions": {
+    "A1": {
+      "n": 25,
+      "oecd_median": 54.629999999999995,
+      "brazil": 49.4,
+      "brazil_rank": 18
+    },
+    "A2": {
+      "n": 28,
+      "oecd_median": 55.92833333333333
+    },
+    "B": {
+      "n": 27,
+      "oecd_median": 67.025,
+      "brazil": 69.18,
+      "brazil_rank": 12
+    }
+  },
+  "panel": {
+    "n_obs": 176,
+    "n_countries": 30,
+    "cohorts": [
+      2011,
+      2012,
+      2013,
+      2014,
+      2015,
+      2016,
+      2017
+    ]
+  },
+  "multivariate": {
+    "n_obs": 172,
+    "n_countries": 30,
+    "r2": 0.1754565331011947
+  },
+  "factors": 22,
+  "min_n": 15
+}

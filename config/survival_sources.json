@@ -1,0 +1,36 @@
+{
+  "outcome": {
+    "oecd": {
+      "title": "OECD Entrepreneurial Ecosystem Diagnostics 2025 — Table A B.2",
+      "url": "https://www.oecd.org/en/publications/entrepreneurial-ecosystem-diagnostics_7096961f-en/full-report/key-data-for-selected-entrepreneurship-indicators_1c1f628c.html",
+      "concept": "Three-year survival rate of employer enterprises",
+      "status": "Official report table transcribed for the pilot",
+      "future_api": "OECD.SDD.TPS,DSD_SDBSBD_ISIC4@DF_BD_EMP_S,1.0"
+    },
+    "ibge_employer": {
+      "title": "Demografia das Empresas 2022",
+      "url": "https://biblioteca.ibge.gov.br/index.php/biblioteca-catalogo?id=2102142&view=detalhes",
+      "release_url": "https://agenciadenoticias.ibge.gov.br/agencia-noticias/2012-agencia-de-noticias/noticias/42109-taxa-de-nascimento-de-empresas-empregadoras-chega-a-15-3-e-e-a-maior-desde-2017",
+      "concept": "Survival of employer enterprises born in 2017",
+      "status": "Official publication and release"
+    },
+    "ibge_legacy": {
+      "title": "Demografia das Empresas 2018 — older all-enterprise series",
+      "url": "https://agenciadenoticias.ibge.gov.br/agencia-noticias/2012-agencia-de-noticias/noticias/29212-com-taxa-de-sobrevivencia-de-84-1-pais-tem-saldo-negativo-de-empresas-em-2018",
+      "concept": "Survival of active enterprises born in 2013",
+      "status": "Methodologically separate legacy series"
+    }
+  },
+  "factors": {
+    "oecd_ecosystem": {
+      "title": "OECD Entrepreneurial Ecosystem Diagnostics 2025 — Table 3.1",
+      "url": "https://www.oecd.org/en/publications/entrepreneurial-ecosystem-diagnostics_7096961f-en/full-report/cross-country-diagnostic-results_aa27755d.html",
+      "period": "2020-2023",
+      "concept": "Normalised composite scores from 0 to 100",
+      "warning": "The factor period is not temporally aligned with the 2017 cohort outcome; correlations validate the dashboard architecture only."
+    }
+  },
+  "methods": {
+    "url": "https://www.oecd.org/en/publications/entrepreneurial-ecosystem-diagnostics_7096961f-en/full-report/methods-and-data_58923457.html"
+  }
+}

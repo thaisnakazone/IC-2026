@@ -1,0 +1,32 @@
+country_code,country_en,reference_year,cohort_year,survival_age_years,survival_rate_pct,source_table,source_note
+AUT,Austria,2020,2017,3,55.3,Table A B.2,Most recent observation reported by the OECD
+BEL,Belgium,2020,2017,3,75.6,Table A B.2,Most recent observation reported by the OECD
+COL,Colombia,2021,2018,3,38.3,Table A B.2,Most recent observation reported by the OECD
+CZE,Czechia,2020,2017,3,61.6,Table A B.2,Most recent observation reported by the OECD
+DNK,Denmark,2020,2017,3,22.9,Table A B.2,Most recent observation reported by the OECD
+EST,Estonia,2020,2017,3,49.1,Table A B.2,Most recent observation reported by the OECD
+FIN,Finland,2020,2017,3,54.7,Table A B.2,Most recent observation reported by the OECD
+FRA,France,2020,2017,3,54.8,Table A B.2,Most recent observation reported by the OECD
+DEU,Germany,2020,2017,3,64.2,Table A B.2,Most recent observation reported by the OECD
+GRC,Greece,2020,2017,3,44.2,Table A B.2,Most recent observation reported by the OECD
+HUN,Hungary,2020,2017,3,19.7,Table A B.2,Most recent observation reported by the OECD
+ISL,Iceland,2020,2017,3,44.9,Table A B.2,Most recent observation reported by the OECD
+IRL,Ireland,2020,2017,3,81.9,Table A B.2,Most recent observation reported by the OECD
+ISR,Israel,2022,2019,3,57.0,Table A B.2,Most recent observation reported by the OECD
+ITA,Italy,2020,2017,3,53.1,Table A B.2,Most recent observation reported by the OECD
+KOR,Korea,2019,2016,3,45.9,Table A B.2,Most recent observation reported by the OECD
+LVA,Latvia,2020,2017,3,67.4,Table A B.2,Most recent observation reported by the OECD
+LTU,Lithuania,2020,2017,3,50.7,Table A B.2,Most recent observation reported by the OECD
+LUX,Luxembourg,2019,2016,3,65.3,Table A B.2,Most recent observation reported by the OECD
+NLD,Netherlands,2020,2017,3,59.1,Table A B.2,Most recent observation reported by the OECD
+NZL,New Zealand,2020,2017,3,51.0,Table A B.2,Most recent observation reported by the OECD
+NOR,Norway,2020,2017,3,45.0,Table A B.2,Most recent observation reported by the OECD
+POL,Poland,2020,2017,3,35.2,Table A B.2,Most recent observation reported by the OECD
+PRT,Portugal,2020,2017,3,65.1,Table A B.2,Most recent observation reported by the OECD
+SVK,Slovak Republic,2020,2017,3,56.2,Table A B.2,Most recent observation reported by the OECD
+SVN,Slovenia,2020,2017,3,54.7,Table A B.2,Most recent observation reported by the OECD
+ESP,Spain,2020,2017,3,53.0,Table A B.2,Most recent observation reported by the OECD
+SWE,Sweden,2020,2017,3,88.7,Table A B.2,Most recent observation reported by the OECD
+CHE,Switzerland,2019,2016,3,64.3,Table A B.2,Most recent observation reported by the OECD
+TUR,Türkiye,2020,2017,3,48.2,Table A B.2,Most recent observation reported by the OECD
+GBR,United Kingdom,2018,2015,3,56.7,Table A B.2,Most recent observation reported by the OECD

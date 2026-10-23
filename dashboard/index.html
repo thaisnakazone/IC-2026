@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Sobrevivência de empresas empregadoras no Brasil e em países da OCDE: comparação e fatores associados.">
+  <title>Sobreviver para crescer</title>
+  <link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+  <header class="hero">
+    <div class="hero__inner">
+      <div>
+        <p class="eyebrow">IC 2026 · ETAPA 2 · DADOS DAS APIs OCDE E BANCO MUNDIAL</p>
+        <h1>Sobreviver para <span>crescer</span></h1>
+        <p class="hero__copy">Quais fatores do ambiente econômico, institucional, financeiro, tecnológico e tributário estão associados à sobrevivência das empresas empregadoras no Brasil e nos países da OCDE?</p>
+      </div>
+      <div class="hero__stamp" aria-label="Base de dados">
+        <small>BASE DA ETAPA 2</small>
+        <strong id="stamp-main">—</strong>
+        <span id="stamp-sub">—</span>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="kpis" aria-label="Indicadores principais">
+      <article class="kpi kpi--accent"><span>Brasil · 3 anos (IBGE)</span><strong id="kpi-a1">—</strong><small id="kpi-a1-sub">—</small></article>
+      <article class="kpi"><span>Brasil · 2 anos (OCDE)</span><strong id="kpi-b">—</strong><small id="kpi-b-sub">—</small></article>
+      <article class="kpi"><span>Evidência robusta</span><strong id="kpi-robust">—</strong><small id="kpi-robust-sub">—</small></article>
+      <article class="kpi"><span>Painel país × coorte</span><strong id="kpi-panel">—</strong><small id="kpi-panel-sub">—</small></article>
+    </section>
+
+    <nav class="tabs" aria-label="Seções do dashboard" role="tablist">
+      <button class="tab is-active" data-tab="comparison" role="tab">Comparação</button>
+      <button class="tab" data-tab="factors" role="tab">Fatores</button>
+      <button class="tab" data-tab="panel" role="tab">Painel</button>
+      <button class="tab" data-tab="brazil" role="tab">Brasil: IBGE × OCDE</button>
+      <button class="tab" data-tab="method" role="tab">Método & cobertura</button>
+    </nav>
+
+    <!-- COMPARAÇÃO -->
+    <section class="tab-panel is-active" id="comparison">
+      <div class="section-heading">
+        <div><p class="eyebrow">DESFECHO</p><h2>Quantas empresas empregadoras continuam ativas?</h2></div>
+        <p>A posição do Brasil depende da fonte e do horizonte. Troque o recorte para ver como o ranking muda.</p>
+      </div>
+      <div class="filter-row">
+        <label for="design-select">Recorte</label>
+        <div class="segmented" id="design-select" role="radiogroup" aria-label="Recorte analítico"></div>
+      </div>
+      <div class="grid grid--ranking">
+        <article class="card chart-card">
+          <div class="card__header">
+            <div><h3 id="ranking-title">—</h3><p id="ranking-sub">—</p></div>
+            <span class="legend"><i class="sw sw--brazil"></i>Brasil <i class="sw sw--median"></i>Mediana OCDE</span>
+          </div>
+          <div id="ranking-chart" class="ranking-chart" aria-label="Ranking das taxas de sobrevivência"></div>
+        </article>
+        <aside class="card insight-card">
+          <p class="eyebrow">LEITURA DO RECORTE</p>
+          <h3 id="comparison-headline">—</h3>
+          <p id="comparison-text">—</p>
+          <div class="mini-stat"><span>Distância da mediana OCDE</span><strong id="median-gap">—</strong></div>
+          <div class="mini-stat"><span>Faixa observada</span><strong id="observed-range">—</strong></div>
+          <div class="mini-stat"><span>Países no recorte</span><strong id="design-n">—</strong></div>
+          <p class="microcopy" id="design-note">—</p>
+        </aside>
+      </div>
+    </section>
+
+    <!-- FATORES -->
+    <section class="tab-panel" id="factors">
+      <div class="section-heading">
+        <div><p class="eyebrow">FATORES ANTERIORES À COORTE</p><h2>O que caminha junto com a sobrevivência?</h2></div>
+        <p>Os 22 indicadores são medidos antes do nascimento das empresas. Uma associação só merece destaque se aparecer com o mesmo sinal em todos os recortes.</p>
+      </div>
+      <div class="filter-row">
+        <label for="factor-select">Fator</label>
+        <select id="factor-select"></select>
+        <label for="factor-design">Recorte</label>
+        <select id="factor-design"></select>
+      </div>
+      <div class="metric-strip">
+        <div><span>Pearson r</span><strong id="metric-pearson">—</strong></div>
+        <div><span>Spearman ρ</span><strong id="metric-spearman">—</strong></div>
+        <div><span>Países</span><strong id="metric-n">—</strong></div>
+        <div><span>p nominal</span><strong id="metric-p">—</strong></div>
+        <div><span>q (Benjamini–Hochberg)</span><strong id="metric-q">—</strong></div>
+        <div><span>Classificação</span><strong id="metric-evidence">—</strong></div>
+      </div>
+      <div class="grid grid--factors">
+        <article class="card chart-card">
+          <div class="card__header">
+            <div><h3 id="scatter-title">—</h3><p id="scatter-sub">—</p></div>
+            <span class="legend"><i class="sw sw--brazil"></i>Brasil <i class="sw sw--oecd"></i>OCDE</span>
+          </div>
+          <div id="scatter-chart" class="scatter-wrap"></div>
+          <p class="chart-note" id="stability-note">—</p>
+        </article>
+        <aside class="card">
+          <div class="card__header"><div><h3>Como ler</h3><p>Critério de classificação</p></div></div>
+          <dl class="evidence-key">
+            <dt><span class="badge badge--robusta">Robusta</span></dt><dd>Mesmo sinal em todos os recortes, p &lt; 0,05 em 3 ou mais e q &lt; 0,10 no painel ou em A1.</dd>
+            <dt><span class="badge badge--sugestiva">Sugestiva</span></dt><dd>Mesmo sinal em todos os recortes e p &lt; 0,05 em 2 deles.</dd>
+            <dt><span class="badge badge--sinal">Mesmo sinal</span></dt><dd>Direção estável, sem significância estatística.</dd>
+            <dt><span class="badge badge--inconsistente">Inconsistente</span></dt><dd>O sinal muda entre recortes.</dd>
+          </dl>
+          <p class="microcopy">Correlação entre países não é efeito causal. Com 25 a 29 países, só correlações acima de |r| ≈ 0,4 costumam ser detectáveis.</p>
+        </aside>
+      </div>
+      <article class="card heatmap-card">
+        <div class="card__header">
+          <div><h3>Consistência entre recortes</h3><p>Correlação de Pearson (r) de cada fator com a sobrevivência · * p &lt; 0,05 · clique numa linha para ver a dispersão</p></div>
+          <div class="scale-legend" aria-hidden="true"><span>−0,5</span><i class="scale-bar"></i><span>+0,5</span></div>
+        </div>
+        <div class="table-wrap"><table id="heatmap" class="heatmap"><thead></thead><tbody></tbody></table></div>
+      </article>
+    </section>
+
+    <!-- PAINEL -->
+    <section class="tab-panel" id="panel">
+      <div class="section-heading">
+        <div><p class="eyebrow">PAINEL PAÍS × COORTE</p><h2>Somando várias coortes, o que se mantém?</h2></div>
+        <p id="panel-intro">—</p>
+      </div>
+      <div class="grid grid--panel">
+        <article class="card chart-card">
+          <div class="card__header">
+            <div><h3>Um fator por vez</h3><p>Variação da sobrevivência em 3 anos (p.p.) por 1 desvio-padrão do fator · intervalo de 95%</p></div>
+            <span class="legend"><i class="sw sw--sig"></i>p &lt; 0,05 <i class="sw sw--nsig"></i>p ≥ 0,05</span>
+          </div>
+          <div id="forest-chart" class="forest-wrap"></div>
+        </article>
+        <aside class="card">
+          <div class="card__header"><div><h3>Modelo conjunto</h3><p id="multi-sub">—</p></div></div>
+          <div id="multi-chart" class="forest-wrap forest-wrap--small"></div>
+          <p class="microcopy">Um fator por dimensão, escolhido antes de estimar. O sinal negativo de usuários de internet vem da colinearidade com a qualidade regulatória (VIF 3,3 e 4,0) e não deve ser interpretado.</p>
+        </aside>
+      </div>
+    </section>
+
+    <!-- BRASIL -->
+    <section class="tab-panel" id="brazil">
+      <div class="section-heading">
+        <div><p class="eyebrow">FONTES PARA O BRASIL</p><h2>Mesmo país, mesma coorte, duas respostas</h2></div>
+        <p>IBGE e OCDE concordam no primeiro ano e se afastam a partir do segundo. Por isso, a posição do Brasil no ranking exige ressalva.</p>
+      </div>
+      <div class="grid grid--brazil">
+        <article class="card chart-card">
+          <div class="card__header">
+            <div><h3>Coorte de 2017</h3><p>Sobrevivência por idade da empresa (%)</p></div>
+            <span class="legend"><i class="sw sw--brazil"></i>Brasil · IBGE <i class="sw sw--oecd"></i>Brasil · OCDE <i class="sw sw--median"></i>Mediana OCDE</span>
+          </div>
+          <div id="brazil-curve" class="curve-wrap"></div>
+        </article>
+        <aside class="card insight-card">
+          <p class="eyebrow">DIVERGÊNCIA</p>
+          <h3 id="div-headline">—</h3>
+          <p id="div-text">—</p>
+          <div id="div-table" class="horizon-list"></div>
+          <p class="microcopy">O IBGE considera morta a empresa que encerra a atividade ou fica 24 meses sem empregados. O próximo passo é confirmar o critério usado no envio dos dados brasileiros à OCDE.</p>
+        </aside>
+      </div>
+      <article class="card">
+        <div class="card__header">
+          <div><h3>Brasil na série da OCDE</h3><p>Sobrevivência em 1 e 2 anos por ano de observação (%)</p></div>
+          <span class="legend"><i class="sw sw--oecd"></i>Brasil · OCDE <i class="sw sw--median"></i>Mediana OCDE</span>
+        </div>
+        <div class="multiples" id="brazil-multiples"></div>
+      </article>
+    </section>
+
+    <!-- MÉTODO -->
+    <section class="tab-panel" id="method">
+      <div class="section-heading">
+        <div><p class="eyebrow">TRANSPARÊNCIA</p><h2>Como os recortes foram construídos</h2></div>
+        <p>Cada recorte testa as mesmas hipóteses com outro desfecho, período ou ajuste. A ausência de dados aparece na tabela de cobertura.</p>
+      </div>
+      <div class="grid grid--coverage">
+        <article class="card coverage-card">
+          <div class="card__header"><div><h3>Cobertura dos fatores (média 2014–2016)</h3><p id="coverage-sub">Países dos recortes A1 e B com dado para cada fator</p></div></div>
+          <div class="table-wrap"><table id="coverage-table" class="coverage"><thead></thead><tbody></tbody></table></div>
+        </article>
+        <aside class="card method-card">
+          <p class="eyebrow">RECORTES</p>
+          <ol id="design-list"></ol>
+          <h3>Fontes oficiais</h3>
+          <div id="source-links" class="source-links"></div>
+          <h3>Baixar dados</h3>
+          <div class="downloads">
+            <a class="download" href="assets/corte_A1_coorte2017_3anos.csv" download>Recorte A1 (.csv)</a>
+            <a class="download" href="assets/corte_B_coorte2017_2anos.csv" download>Recorte B (.csv)</a>
+            <a class="download" href="assets/painel_pais_coorte.csv" download>Painel (.csv)</a>
+            <a class="download" href="assets/sintese_evidencia.csv" download>Síntese (.csv)</a>
+          </div>
+        </aside>
+      </div>
+    </section>
+  </main>
+
+  <footer><span>Iniciação Científica 2026 · Fatec Sebrae</span><span id="footer-date">Dados: OCDE, IBGE e Banco Mundial</span></footer>
+  <div id="tooltip" class="tooltip" role="status" aria-live="polite"></div>
+  <script src="assets/data.js"></script>
+  <script src="assets/app.js"></script>
+</body>
+</html>

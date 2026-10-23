@@ -1,0 +1,19 @@
+table,variable,type,description,unit
+fact_survival,country_code,text,Código ISO alfa-3,sem unidade
+fact_survival,reference_year,integer,Ano em que a sobrevivência é observada,ano
+fact_survival,cohort_year,integer,Ano de nascimento da coorte empresarial,ano
+fact_survival,survival_age_years,integer,Horizonte desde o nascimento da coorte,anos
+fact_survival,survival_rate_pct,number,Parcela da coorte ainda ativa no horizonte informado,percentual
+fact_survival,population_definition,text,População empresarial coberta pela fonte,sem unidade
+fact_survival,comparability_tier,text,Nível A B ou C de comparabilidade,sem unidade
+fact_factors,factor_code,text,Código estável do indicador explicativo,sem unidade
+fact_factors,value,number,Valor observado do fator,conforme unit
+fact_factors,period_start,integer,Início do período do fator,ano
+fact_factors,period_end,integer,Fim do período do fator,ano
+fact_factors,timing_role,text,Relação temporal do fator com o desfecho,sem unidade
+correlations_pilot,pearson_r,number,Correlação linear de Pearson,-1 a 1
+correlations_pilot,spearman_rho,number,Correlação de postos de Spearman,-1 a 1
+correlations_pilot,pearson_p,number,P-valor nominal do teste de Pearson,0 a 1
+correlations_pilot,pearson_q_bh,number,P-valor ajustado Benjamini-Hochberg,0 a 1
+correlations_pilot,loo_pearson_min,number,Menor Pearson ao retirar um país,-1 a 1
+correlations_pilot,loo_pearson_max,number,Maior Pearson ao retirar um país,-1 a 1

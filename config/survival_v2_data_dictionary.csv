@@ -1,0 +1,23 @@
+factor_code,indicador_fonte,nome,dimensao,unidade,fonte,transformacao,sinal_esperado
+gdp_growth,NY.GDP.MKTP.KD.ZG,Crescimento do PIB,Macroeconômico,% a.a.,Banco Mundial — World Development Indicators (API v2),,+
+inflation,FP.CPI.TOTL.ZG,Inflação (IPC),Macroeconômico,% a.a.,Banco Mundial — World Development Indicators (API v2),,−
+log_gdp_pc,NY.GDP.PCAP.PP.KD,"PIB per capita (PPC, log)",Macroeconômico,log US$ PPC,Banco Mundial — World Development Indicators (API v2),log,+
+unemployment,SL.UEM.TOTL.ZS,Desemprego,Macroeconômico,% força de trabalho,Banco Mundial — World Development Indicators (API v2),,−
+private_credit,FS.AST.PRVT.GD.ZS,Crédito doméstico ao setor privado,Financeiro,% PIB,Banco Mundial — World Development Indicators (API v2),,+
+real_interest,FR.INR.RINR,Taxa real de juros,Financeiro,%,Banco Mundial — World Development Indicators (API v2),,−
+insolvency_recovery,RESLV.ISV.RCOV.RT,Taxa de recuperação na insolvência,Financeiro,centavos por dólar,"Banco Mundial — Doing Business (API v2, fonte 1)",,+
+regulatory_quality,GOV_WGI_RQ.EST,Qualidade regulatória,Institucional,"escore (−2,5 a 2,5)",Banco Mundial — Worldwide Governance Indicators (API v2),,+
+rule_of_law,GOV_WGI_RL.EST,Estado de direito,Institucional,"escore (−2,5 a 2,5)",Banco Mundial — Worldwide Governance Indicators (API v2),,+
+gov_effectiveness,GOV_WGI_GE.EST,Efetividade do governo,Institucional,"escore (−2,5 a 2,5)",Banco Mundial — Worldwide Governance Indicators (API v2),,+
+log_days_start,IC.REG.DURS.MA.DY,Tempo para abrir empresa (log),Institucional,log dias,"Banco Mundial — Doing Business (API v2, fonte 1)",log,?
+internet_users,IT.NET.USER.ZS,Usuários de internet,Tecnológico,% população,Banco Mundial — World Development Indicators (API v2),,+
+rd_expenditure,GB.XPD.RSDV.GD.ZS,Gasto em P&D,Tecnológico,% PIB,Banco Mundial — World Development Indicators (API v2),,+
+tax_to_gdp,tax_rev_pct_gdp:_T,Carga tributária total,Tributário,% PIB,OCDE — Global Revenue Statistics (SDMX),,?
+income_tax_share,share:T_1000,Tributos sobre renda e lucro,Tributário,% da receita tributária,OCDE — Global Revenue Statistics (SDMX),,?
+ssc_share,share:T_2000,Contribuições sociais,Tributário,% da receita tributária,OCDE — Global Revenue Statistics (SDMX),,?
+consumption_tax_share,share:T_5000,Tributos sobre bens e serviços,Tributário,% da receita tributária,OCDE — Global Revenue Statistics (SDMX),,?
+cit_revenue,tax_rev_pct_gdp:T_1200,Receita de IRPJ,Tributário,% PIB,OCDE — Global Revenue Statistics (SDMX),,?
+cit_rate,cit_combined_statutory_rate,Alíquota estatutária do IRPJ,Tributário,%,OCDE — Corporate Tax Statistics (SDMX),,−
+total_tax_rate,PAY.TAX.TOT.TAX.RT.ZS,Carga total sobre o lucro (Doing Business),Tributário,% do lucro,"Banco Mundial — Doing Business (API v2, fonte 1)",,−
+log_tax_hours,PAY.TAX.TM,Horas para cumprir obrigações tributárias (log),Tributário,log horas/ano,"Banco Mundial — Doing Business (API v2, fonte 1)",log,−
+log_tax_payments,PAY.TAX.PYMT.FREQ.NO,Número de pagamentos de tributos (log),Tributário,log pagamentos/ano,"Banco Mundial — Doing Business (API v2, fonte 1)",log,−

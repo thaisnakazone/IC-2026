@@ -1,0 +1,10 @@
+{
+  "status": "ok",
+  "common_cross_section_rows": 26,
+  "common_cross_section_oecd": 25,
+  "brazil_rate": 49.4,
+  "duplicate_country_rows": 0,
+  "correlation_factors": 10,
+  "minimum_correlation_n": 17,
+  "legacy_series_separated": true
+}
