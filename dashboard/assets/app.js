@@ -15,6 +15,18 @@
   const EVIDENCE = Object.fromEntries(D.evidence.map((e) => [e.factor_code, e.evidence]));
   const DIM_ORDER = ["Macroeconômico", "Financeiro", "Institucional", "Tecnológico", "Tributário"];
   const corrOf = (design, code) => D.correlations.find((c) => c.design === design && c.factor_code === code);
+  const hasBrazil = (design) => D.designs[design].brazil !== undefined;
+  const plainName = (f) => f.name.replace(/ \(log\)$/, "").replace(", log)", ")");
+  // marcas de eixo em unidades originais para fatores em logaritmo natural
+  function logTicks(lo, hi) {
+    const a = Math.exp(lo), b = Math.exp(hi);
+    const mult = Math.log10(b / a) < 1 ? [1, 1.5, 2, 3, 5, 7] : [1, 2, 5];
+    const out = [];
+    for (let k = Math.floor(Math.log10(a)); k <= Math.ceil(Math.log10(b)); k++) {
+      mult.forEach((m) => { const v = m * 10 ** k; if (v >= a && v <= b) out.push(Number(v.toPrecision(3))); });
+    }
+    return out;
+  }
   const tooltip = $("#tooltip");
   const state = {design: "A1", factor: "log_tax_hours", factorDesign: "A1"};
 
@@ -77,7 +89,7 @@
   function renderSummary() {
     const a1 = D.designs.A1, b = D.designs.B, m = D.meta;
     $("#stamp-main").textContent = `${m.factors_total} fatores · ${m.panel.n_countries} países`;
-    $("#stamp-sub").textContent = `${m.oecd_rows.toLocaleString("pt-BR")} observações de sobrevivência (OCDE) · fatores de 2011–2016`;
+    $("#stamp-sub").textContent = `${m.oecd_rows.toLocaleString("pt-BR")} observações de sobrevivência (OCDE) · fatores de 2011–2016 · ${m.factors_tested} fatores com cobertura suficiente para teste`;
     $("#kpi-a1").textContent = pct(a1.brazil);
     $("#kpi-a1-sub").textContent = `${a1.brazil_rank}º de ${a1.n} · mediana OCDE ${pct(a1.oecd_median)}`;
     $("#kpi-b").textContent = pct(b.brazil);
@@ -86,11 +98,25 @@
     const robust = [...tested].filter((c) => EVIDENCE[c] === "Robusta");
     const sugg = [...tested].filter((c) => EVIDENCE[c] === "Sugestiva").map((c) => FACTOR[c].name.replace(/ \(log\)$/, ""));
     $("#kpi-robust").textContent = `${robust.length} de ${tested.size}`;
-    $("#kpi-robust-sub").textContent = sugg.length ? `Sugestiva: ${sugg.join(", ").toLowerCase()}` : "nenhuma associação sugestiva";
+    $("#kpi-robust-sub").textContent = sugg.length ? `Fatores testados · ${sugg.length} sugestiva${sugg.length > 1 ? "s" : ""}: ${sugg.join(", ").toLowerCase()}` : "Fatores testados · nenhuma associação sugestiva";
+    // dimensão do conjunto de testes (correlações por recorte + painel)
+    const corrTests = D.correlations.filter((c) => c.pearson_r !== null);
+    const panelTests = D.panel_models.filter((r) => r.pooled_beta_pp_per_sd !== null);
+    const nTests = corrTests.length + panelTests.length;
+    const nSig = corrTests.filter((c) => c.pearson_p < 0.05).length + panelTests.filter((r) => r.pooled_p < 0.05).length;
+    const minQ = Math.min(...corrTests.map((c) => c.pearson_q_bh), ...panelTests.map((r) => r.pooled_q_bh));
+    const untested = D.factors.filter((f) => !tested.has(f.code)).map((f) => f.name.toLowerCase());
+    $("#factors-intro").textContent = `Os ${m.factors_total} indicadores são medidos antes do nascimento das empresas` +
+      (untested.length ? `; ${tested.size} têm cobertura suficiente para teste (sem cobertura: ${untested.join(", ")}). ` : ". ") +
+      "Uma associação só merece destaque se aparecer com o mesmo sinal em todos os recortes.";
+    $("#tests-note").innerHTML = `<strong>Leia antes de interpretar.</strong> Foram ${nTests} testes (${tested.size} fatores em ${D.design_order.length} recortes e no painel). ` +
+      `${nSig} tiveram p &lt; 0,05; só por acaso, seriam esperados cerca de ${Math.round(nTests * 0.05)}. ` +
+      (minQ >= 0.1 ? `Nenhum permanece significativo após a correção de Benjamini–Hochberg (menor q = ${fmt(minQ, 2)}). ` : "") +
+      "Os recortes usam os mesmos países e, em parte, os mesmos dados: não são confirmações independentes.";
     $("#kpi-panel").textContent = `${m.panel.n_obs} coortes`;
     $("#kpi-panel-sub").textContent = `${m.panel.n_countries} países · coortes ${m.panel.cohorts[0]}–${m.panel.cohorts.at(-1)}`;
     const [y, mo, d] = m.updated.split("-");
-    $("#footer-date").textContent = `Dados: OCDE, IBGE e Banco Mundial · atualizado em ${d}/${mo}/${y}`;
+    $("#footer-date").textContent = `Dados: OCDE, IBGE e Banco Mundial · coletados em ${d}/${mo}/${y}`;
   }
 
   // ------------------------------------------------------------------ comparação
@@ -117,13 +143,13 @@
     chart.innerHTML = d.rows.map((r) => `
       <div class="rank-row${r.country_code === "BRA" ? " is-brazil" : ""}" data-code="${r.country_code}">
         <span class="rank-number">${r.rank}</span>
-        <span class="rank-country" title="${esc(r.country_name_pt)}">${esc(r.country_name_pt)}</span>
+        <span class="rank-country" title="${esc(r.country_name_pt)}">${esc(r.country_name_pt)}${(d.flags || []).includes(r.country_code) ? "*" : ""}</span>
         <span class="rank-track"><i class="rank-bar" style="width:${r.survival_rate_pct / max * 100}%"></i><i class="rank-median" style="left:${medPos}%"></i></span>
         <span class="rank-value">${fmt(r.survival_rate_pct)}</span>
       </div>`).join("");
     $$("#ranking-chart .rank-row").forEach((row) => {
       const r = d.rows.find((x) => x.country_code === row.dataset.code);
-      bindTip(row, `<strong>${esc(r.country_name_pt)}</strong><br>${pct(r.survival_rate_pct)} · ${r.rank}º de ${d.n}<br>Mediana OCDE: ${pct(d.oecd_median)}`);
+      bindTip(row, `<strong>${esc(r.country_name_pt)}</strong><br>${pct(r.survival_rate_pct)} · ${r.rank}º de ${d.n}<br>Mediana OCDE: ${pct(d.oecd_median)}${(d.flags || []).includes(r.country_code) ? "<br>* Valor muito baixo: possível quebra de série" : ""}`);
     });
 
     $("#design-n").textContent = `${d.n}`;
@@ -157,7 +183,7 @@
     sel.innerHTML = groups.join("");
     sel.value = state.factor;
     const ds = $("#factor-design");
-    ds.innerHTML = D.design_order.map((k) => `<option value="${k}">${esc(D.designs[k].label)}</option>`).join("");
+    ds.innerHTML = D.design_order.map((k) => `<option value="${k}">${esc(D.designs[k].label)} · ${hasBrazil(k) ? "com" : "sem"} o Brasil</option>`).join("");
     sel.addEventListener("change", () => { state.factor = sel.value; renderFactor(); });
     ds.addEventListener("change", () => { state.factorDesign = ds.value; renderFactor(); });
     renderHeatmap();
@@ -171,10 +197,14 @@
     const pts = d.rows.filter((r) => fv[r.country_code] !== undefined && fv[r.country_code] !== null)
       .map((r) => ({...r, x: fv[r.country_code], y: r.survival_rate_pct}));
     const [w0, w1] = d.window.split("_");
-    $("#scatter-title").textContent = f.name;
-    $("#scatter-sub").textContent = `${d.outcome} × ${f.name.toLowerCase()} (média ${w0}–${w1}, ${f.unit})`;
+    const isLog = f.transform === "log";
+    const fName = plainName(f), fUnit = f.unit.replace(/^log /, "");
+    const xVal = (x) => isLog ? `${fmt(Math.exp(x), Math.exp(x) < 10 ? 1 : 0)} ${fUnit}` : `${fmt(x, 2)} ${fUnit}`;
+    $("#scatter-title").textContent = fName;
+    $("#scatter-sub").textContent = `${d.outcome} × ${fName.toLowerCase()} (média ${w0}–${w1}, ${fUnit})`;
     $("#metric-pearson").textContent = c.pearson_r == null ? "—" : signed(c.pearson_r, 2);
     $("#metric-spearman").textContent = c.spearman_rho == null ? "—" : signed(c.spearman_rho, 2);
+    $("#metric-spearman-p").textContent = c.spearman_p == null ? "" : `p = ${pval(c.spearman_p)}`;
     $("#metric-n").textContent = c.n ?? pts.length;
     $("#metric-p").textContent = pval(c.pearson_p);
     $("#metric-q").textContent = pval(c.pearson_q_bh);
@@ -190,7 +220,8 @@
       return;
     }
     const xs = pts.map((p) => p.x), ys = pts.map((p) => p.y);
-    const [x0, x1, xs_] = niceDomain(Math.min(...xs), Math.max(...xs), 6);
+    const xPad = (Math.max(...xs) - Math.min(...xs)) * 0.05 || 0.1;
+    const [x0, x1, xs_] = isLog ? [Math.min(...xs) - xPad, Math.max(...xs) + xPad, 1] : niceDomain(Math.min(...xs), Math.max(...xs), 6);
     const [y0, y1, ys_] = niceDomain(Math.min(...ys), Math.max(...ys), 5);
     const sx = scale(x0, x1, M.left, W - M.right), sy = scale(y0, y1, H - M.bottom, M.top);
     for (let t = y0; t <= y1 + 1e-9; t += ys_) {
@@ -198,22 +229,36 @@
       root.append(svg("text", {x: M.left - 8, y: sy(t) + 4, "text-anchor": "end", class: "tick-label"}, `${fmt(t, 0)}%`));
     }
     const xd = xs_ < 1 ? (xs_ < 0.1 ? 2 : 1) : 0;
-    for (let t = x0; t <= x1 + 1e-9; t += xs_) {
-      root.append(svg("text", {x: sx(t), y: H - M.bottom + 18, "text-anchor": "middle", class: "tick-label"}, fmt(t, xd)));
+    if (isLog) {
+      logTicks(x0, x1).forEach((v) => {
+        root.append(svg("line", {x1: sx(Math.log(v)), x2: sx(Math.log(v)), y1: H - M.bottom, y2: H - M.bottom + 5, class: "axis"}));
+        root.append(svg("text", {x: sx(Math.log(v)), y: H - M.bottom + 18, "text-anchor": "middle", class: "tick-label"}, fmt(v, v < 10 && !Number.isInteger(v) ? 1 : 0)));
+      });
+    } else {
+      for (let t = x0; t <= x1 + 1e-9; t += xs_) {
+        root.append(svg("text", {x: sx(t), y: H - M.bottom + 18, "text-anchor": "middle", class: "tick-label"}, fmt(t, xd)));
+      }
     }
     root.append(svg("line", {x1: M.left, x2: W - M.right, y1: H - M.bottom, y2: H - M.bottom, class: "axis"}));
-    root.append(svg("text", {x: (M.left + W - M.right) / 2, y: H - 10, "text-anchor": "middle", class: "axis-label"}, `${f.name} (${f.unit})`));
+    root.append(svg("text", {x: (M.left + W - M.right) / 2, y: H - 10, "text-anchor": "middle", class: "axis-label"}, `${fName} (${fUnit}${isLog ? ", escala logarítmica" : ""})`));
     root.append(svg("text", {x: 14, y: (H - M.bottom + M.top) / 2, transform: `rotate(-90 14 ${(H - M.bottom + M.top) / 2})`, "text-anchor": "middle", class: "axis-label"}, d.age === 2 ? "Sobrevivência em 2 anos (%)" : "Sobrevivência em 3 anos (%)"));
     // reta de mínimos quadrados
     const mx = xs.reduce((a, b) => a + b) / xs.length, my = ys.reduce((a, b) => a + b) / ys.length;
     const slope = pts.reduce((a, p) => a + (p.x - mx) * (p.y - my), 0) / pts.reduce((a, p) => a + (p.x - mx) ** 2, 0);
-    const xa = Math.min(...xs), xb = Math.max(...xs);
-    root.append(svg("line", {x1: sx(xa), y1: sy(my + slope * (xa - mx)), x2: sx(xb), y2: sy(my + slope * (xb - mx)), class: "regression"}));
+    // traço cheio na faixa observada nos países da OCDE; tracejado no trecho que só existe por causa do Brasil
+    const xo = pts.filter((p) => p.country_code !== "BRA").map((p) => p.x);
+    const xa = Math.min(...xo), xb = Math.max(...xo), fa = Math.min(...xs), fb = Math.max(...xs);
+    const fit = (x) => sy(my + slope * (x - mx));
+    const seg = (a, b, cls) => root.append(svg("line", {x1: sx(a), y1: fit(a), x2: sx(b), y2: fit(b), class: cls}));
+    seg(xa, xb, "regression");
+    if (fa < xa) seg(fa, xa, "regression regression--extra");
+    if (fb > xb) seg(xb, fb, "regression regression--extra");
+    const extrapolated = fa < xa || fb > xb;
     pts.sort((a, b) => (a.country_code === "BRA") - (b.country_code === "BRA")).forEach((p) => {
       const g = svg("g");
       const hit = svg("circle", {cx: sx(p.x), cy: sy(p.y), r: 12, class: "hit"});
       const dot = svg("circle", {cx: sx(p.x), cy: sy(p.y), r: p.country_code === "BRA" ? 6.5 : 5, class: `point${p.country_code === "BRA" ? " point--brazil" : ""}`});
-      bindTip(hit, `<strong>${esc(p.country_name_pt)}</strong><br>${esc(f.name)}: ${fmt(p.x, 2)}<br>Sobrevivência: ${pct(p.y)}`);
+      bindTip(hit, `<strong>${esc(p.country_name_pt)}</strong><br>${esc(fName)}: ${xVal(p.x)}<br>Sobrevivência: ${pct(p.y)}`);
       g.append(hit, dot);
       if (p.country_code === "BRA") g.append(svg("text", {x: sx(p.x) + 10, y: sy(p.y) - 9, class: "data-label"}, "Brasil"));
       root.append(g);
@@ -221,14 +266,16 @@
     $("#scatter-chart").replaceChildren(root);
     const loo = c.loo_pearson_min == null ? "" : `Retirando um país por vez, r varia entre ${signed(c.loo_pearson_min, 2)} e ${signed(c.loo_pearson_max, 2)}. `;
     const bra = pts.some((p) => p.country_code === "BRA") ? "O Brasil está incluído neste recorte." : "O Brasil não entra neste recorte.";
-    const trans = f.transform === "log" ? " O eixo horizontal está em logaritmo natural." : "";
-    $("#stability-note").textContent = `${loo}${bra}${trans} Sinal esperado pela literatura: ${f.expected === "?" ? "ambíguo" : f.expected === "+" ? "positivo" : "negativo"}.`;
+    const trans = isLog ? " O eixo horizontal está em escala logarítmica; a correlação foi calculada com o logaritmo do indicador." : "";
+    const extra = extrapolated ? " A reta usa todos os países do recorte; o trecho tracejado está fora da faixa observada na OCDE e depende só do Brasil." : "";
+    const db = /Doing Business/.test(f.source) ? " Indicador do Doing Business: refere-se a uma empresa hipotética padronizada, e a série foi descontinuada em 2021." : "";
+    $("#stability-note").textContent = `${loo}${bra}${extra}${trans} Sinal esperado pela literatura: ${f.expected === "?" ? "ambíguo" : f.expected === "+" ? "positivo" : "negativo"}.${db}`;
   }
 
   function renderHeatmap() {
     const teal = cssVar("--teal"), orange = cssVar("--orange"), neutral = cssVar("--neutral-cell");
     const cols = D.design_order;
-    $("#heatmap thead").innerHTML = `<tr><th>Fator</th><th>Dimensão</th>${cols.map((k) => `<th title="${esc(D.designs[k].outcome)}">${esc(D.designs[k].short)}</th>`).join("")}<th>Classificação</th></tr>`;
+    $("#heatmap thead").innerHTML = `<tr><th>Fator</th><th>Dimensão</th>${cols.map((k) => `<th title="${esc(D.designs[k].outcome)}">${esc(D.designs[k].short)}<small>${hasBrazil(k) ? "com Brasil" : "sem Brasil"}</small></th>`).join("")}<th class="panel-col" title="Painel país × coorte: variação da sobrevivência em 3 anos, em p.p., por 1 desvio-padrão do fator">Painel<small>p.p./DP · sem Brasil</small></th><th>Classificação</th></tr>`;
     const factors = [...D.factors].sort((a, b) => DIM_ORDER.indexOf(a.dimension) - DIM_ORDER.indexOf(b.dimension));
     const badgeClass = {"Robusta": "robusta", "Sugestiva": "sugestiva", "Mesmo sinal, sem significância": "sinal", "Inconsistente": "inconsistente"};
     $("#heatmap tbody").innerHTML = factors.map((f) => {
@@ -241,10 +288,13 @@
         const sig = c.pearson_p < 0.05;
         return `<td class="cell${sig ? " sig" : ""}" style="background:rgb(${rgb});color:${ink}" title="${esc(D.designs[k].label)} · r = ${signed(c.pearson_r, 2)} · p = ${pval(c.pearson_p)} · n = ${c.n}">${signed(c.pearson_r, 2)}${sig ? "*" : ""}</td>`;
       }).join("");
+      const pm = D.panel_models.find((r) => r.factor_code === f.code);
+      const pcell = (!pm || pm.pooled_beta_pp_per_sd === null) ? `<td class="cell panel-col">—</td>`
+        : `<td class="cell panel-col${pm.pooled_p < 0.05 ? " sig" : ""}" title="Painel · β = ${signed(pm.pooled_beta_pp_per_sd, 2)} p.p. por DP · p = ${pval(pm.pooled_p)} · q = ${pval(pm.pooled_q_bh)} · ${pm.n_obs} obs.">${signed(pm.pooled_beta_pp_per_sd, 1)}${pm.pooled_p < 0.05 ? "*" : ""}</td>`;
       const ev = EVIDENCE[f.code];
       const nOk = D.correlations.some((c) => c.factor_code === f.code && c.pearson_r !== null);
       const badge = nOk ? `<span class="badge badge--${badgeClass[ev]}">${ev === "Mesmo sinal, sem significância" ? "Mesmo sinal" : ev}</span>` : `<span class="badge">Sem cobertura</span>`;
-      return `<tr data-code="${f.code}"><td>${esc(f.name)}</td><td class="dim">${f.dimension}</td>${cells}<td class="ev">${badge}</td></tr>`;
+      return `<tr data-code="${f.code}"><td>${esc(f.name)}</td><td class="dim">${f.dimension}</td>${cells}${pcell}<td class="ev">${badge}</td></tr>`;
     }).join("");
     $$("#heatmap tbody tr").forEach((tr) => tr.addEventListener("click", () => {
       state.factor = tr.dataset.code;
@@ -286,7 +336,12 @@
 
   function renderPanel() {
     const m = D.meta;
-    $("#panel-intro").textContent = `${m.panel.n_obs} observações país × coorte (${m.panel.n_countries} países, coortes ${m.panel.cohorts[0]}–${m.panel.cohorts.at(-1)}). Cada fator é a média dos 3 anos anteriores ao nascimento da coorte. Há efeitos fixos de coorte e erros-padrão agrupados por país.`;
+    $("#panel-intro").textContent = `${m.panel.n_obs} observações país × coorte (${m.panel.n_countries} países, coortes ${m.panel.cohorts[0]}–${m.panel.cohorts.at(-1)}). Cada fator é a média dos 3 anos anteriores ao nascimento da coorte. Há efeitos fixos de coorte e erros-padrão agrupados por país. O Brasil não integra o painel.`;
+    const pq = D.panel_models.filter((r) => r.pooled_beta_pp_per_sd !== null);
+    const pSig = pq.filter((r) => r.pooled_p < 0.05).length, pMinQ = Math.min(...pq.map((r) => r.pooled_q_bh));
+    $("#panel-note").textContent = `${pSig} de ${pq.length} coeficientes ${pSig === 1 ? "tem" : "têm"} p < 0,05` +
+      (pMinQ >= 0.1 ? `; nenhum permanece significativo após a correção para múltiplos testes (menor q = ${fmt(pMinQ, 2)}). ` : ". ") +
+      "Como só há efeitos fixos de coorte, as estimativas refletem diferenças entre países, e não variações ao longo do tempo em cada país.";
     const rows = D.panel_models.filter((r) => r.pooled_beta_pp_per_sd !== null)
       .map((r) => ({label: FACTOR[r.factor_code].name, dim: FACTOR[r.factor_code].dimension, b: r.pooled_beta_pp_per_sd, lo: r.pooled_ci_low, hi: r.pooled_ci_high, p: r.pooled_p,
         extra: `q-BH = ${pval(r.pooled_q_bh)} · ${r.n_obs} obs., ${r.n_countries} países`}))

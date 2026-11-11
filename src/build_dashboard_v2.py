@@ -15,7 +15,6 @@ from __future__ import annotations
 import base64
 import json
 import shutil
-from datetime import date
 from pathlib import Path
 
 import numpy as np
@@ -29,10 +28,14 @@ ANA = ROOT / "analysis" / "survival_v2"
 DASH = ROOT / "dashboard"
 ASSETS = DASH / "assets"
 
+# Data da coleta nas APIs (src/fetch_api_data.py). Atualize ao coletar de novo.
+DATA_COLLECTED = "2026-10-07"
+
 DESIGN_META = {
     "A1": {"label": "3 anos · coorte 2017", "short": "A1", "age": 3, "window": "2014_2016",
            "outcome": "Sobrevivência em 3 anos (%) · coorte 2017, obs. 2020",
-           "note": "Brasil pelo IBGE; demais países pela OCDE. É o corte do piloto.",
+           "note": "Brasil pelo IBGE; demais países pela OCDE. * Hungria e Dinamarca têm valores muito baixos em 2020, o que sugere quebra de série.",
+           "flags": ["HUN", "DNK"],
            "file": "analytic_A1_cohort2017_s3.csv"},
     "B": {"label": "2 anos · fonte única OCDE", "short": "B", "age": 2, "window": "2014_2016",
           "outcome": "Sobrevivência em 2 anos (%) · coorte 2017, obs. 2019",
@@ -138,9 +141,9 @@ def main() -> None:
     n_tested = int(corr.dropna(subset=["pearson_r"])["factor_code"].nunique())
     payload = {
         "meta": {
-            "title": "Sobreviver para crescer",
-            "updated": date.today().isoformat(),
-            "stage": "Dados das APIs oficiais",
+            "title": "Sobrevivência de empresas empregadoras: Brasil e OCDE",
+            "updated": DATA_COLLECTED,
+            "stage": "Dados das APIs da OCDE e do Banco Mundial",
             "factors_total": len(meta),
             "factors_tested": n_tested,
             "panel": validation["panel"],

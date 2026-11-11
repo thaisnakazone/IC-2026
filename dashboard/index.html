@@ -4,19 +4,19 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Sobrevivência de empresas empregadoras no Brasil e em países da OCDE: comparação e fatores associados.">
-  <title>Sobreviver para crescer</title>
+  <title>Sobrevivência de empresas empregadoras: Brasil e OCDE</title>
   <link rel="stylesheet" href="assets/styles.css">
 </head>
 <body>
   <header class="hero">
     <div class="hero__inner">
       <div>
-        <p class="eyebrow">IC 2026 · FATEC SEBRAE · DADOS OFICIAIS DA OCDE, DO BANCO MUNDIAL E DO IBGE</p>
-        <h1>Sobreviver para <span>crescer</span></h1>
+        <p class="eyebrow">INICIAÇÃO CIENTÍFICA 2026 · FATEC SEBRAE · DADOS DA OCDE, DO BANCO MUNDIAL E DO IBGE</p>
+        <h1>Sobrevivência de empresas empregadoras <span>Brasil e OCDE</span></h1>
         <p class="hero__copy">Quais fatores do ambiente econômico, institucional, financeiro, tecnológico e tributário estão associados à sobrevivência das empresas empregadoras no Brasil e nos países da OCDE?</p>
       </div>
       <div class="hero__stamp" aria-label="Base de dados">
-        <small>DADOS EXTRAÍDOS EM 07/10/2026</small>
+        <small>BASE DE DADOS</small>
         <strong id="stamp-main">—</strong>
         <span id="stamp-sub">—</span>
       </div>
@@ -27,7 +27,7 @@
     <section class="kpis" aria-label="Indicadores principais">
       <article class="kpi kpi--accent"><span>Brasil · 3 anos (IBGE)</span><strong id="kpi-a1">—</strong><small id="kpi-a1-sub">—</small></article>
       <article class="kpi"><span>Brasil · 2 anos (OCDE)</span><strong id="kpi-b">—</strong><small id="kpi-b-sub">—</small></article>
-      <article class="kpi"><span>Evidência robusta</span><strong id="kpi-robust">—</strong><small id="kpi-robust-sub">—</small></article>
+      <article class="kpi"><span>Associações robustas</span><strong id="kpi-robust">—</strong><small id="kpi-robust-sub">—</small></article>
       <article class="kpi"><span>Painel país × coorte</span><strong id="kpi-panel">—</strong><small id="kpi-panel-sub">—</small></article>
     </section>
 
@@ -73,8 +73,9 @@
     <section class="tab-panel" id="factors">
       <div class="section-heading">
         <div><p class="eyebrow">FATORES ANTERIORES À COORTE</p><h2>O que caminha junto com a sobrevivência?</h2></div>
-        <p>Os 22 indicadores são medidos antes do nascimento das empresas. Uma associação só merece destaque se aparecer com o mesmo sinal em todos os recortes.</p>
+        <p id="factors-intro">—</p>
       </div>
+      <p class="callout" id="tests-note">—</p>
       <div class="filter-row">
         <label for="factor-select">Fator</label>
         <select id="factor-select"></select>
@@ -83,11 +84,11 @@
       </div>
       <div class="metric-strip">
         <div><span>Pearson r</span><strong id="metric-pearson">—</strong></div>
-        <div><span>Spearman ρ</span><strong id="metric-spearman">—</strong></div>
+        <div><span>Spearman (rho)</span><strong id="metric-spearman">—</strong><small id="metric-spearman-p"></small></div>
         <div><span>Países</span><strong id="metric-n">—</strong></div>
-        <div><span>p nominal</span><strong id="metric-p">—</strong></div>
+        <div><span>p (Pearson)</span><strong id="metric-p">—</strong></div>
         <div><span>q (Benjamini–Hochberg)</span><strong id="metric-q">—</strong></div>
-        <div><span>Classificação</span><strong id="metric-evidence">—</strong></div>
+        <div><span>Classificação do fator</span><strong id="metric-evidence">—</strong><small>em todos os recortes</small></div>
       </div>
       <div class="grid grid--factors">
         <article class="card chart-card">
@@ -111,7 +112,7 @@
       </div>
       <article class="card heatmap-card">
         <div class="card__header">
-          <div><h3>Consistência entre recortes</h3><p>Correlação de Pearson (r) de cada fator com a sobrevivência · * p &lt; 0,05 · clique numa linha para ver a dispersão</p></div>
+          <div><h3>Consistência entre recortes</h3><p>Correlação de Pearson (r) de cada fator com a sobrevivência, por recorte; na última coluna, o coeficiente do painel (p.p. por desvio-padrão) · * p &lt; 0,05 antes da correção para múltiplos testes · clique numa linha para ver a dispersão</p></div>
           <div class="scale-legend" aria-hidden="true"><span>−0,5</span><i class="scale-bar"></i><span>+0,5</span></div>
         </div>
         <div class="table-wrap"><table id="heatmap" class="heatmap"><thead></thead><tbody></tbody></table></div>
@@ -131,11 +132,12 @@
             <span class="legend"><i class="sw sw--sig"></i>p &lt; 0,05 <i class="sw sw--nsig"></i>p ≥ 0,05</span>
           </div>
           <div id="forest-chart" class="forest-wrap"></div>
+          <p class="chart-note" id="panel-note">—</p>
         </article>
         <aside class="card">
           <div class="card__header"><div><h3>Modelo conjunto</h3><p id="multi-sub">—</p></div></div>
           <div id="multi-chart" class="forest-wrap forest-wrap--small"></div>
-          <p class="microcopy">Um fator por dimensão, escolhido antes de estimar. O sinal negativo de usuários de internet vem da colinearidade com a qualidade regulatória (VIF 3,3 e 4,0) e não deve ser interpretado.</p>
+          <p class="microcopy">Um fator por dimensão, escolhido antes de estimar. O coeficiente de usuários de internet é negativo e o mais significativo do modelo, mas não tem interpretação teórica clara; pode refletir a correlação com a qualidade regulatória (VIF 3,3 e 4,0). Por isso, o modelo conjunto deve ser lido com cautela.</p>
         </aside>
       </div>
     </section>
@@ -159,7 +161,7 @@
           <h3 id="div-headline">—</h3>
           <p id="div-text">—</p>
           <div id="div-table" class="horizon-list"></div>
-          <p class="microcopy">O IBGE considera morta a empresa que encerra a atividade ou fica 24 meses sem empregados. O próximo passo é confirmar o critério usado no envio dos dados brasileiros à OCDE.</p>
+          <p class="microcopy">O IBGE considera morta a empresa que encerra a atividade ou fica 24 meses sem empregados. O próximo passo é confirmar o critério usado no envio dos dados brasileiros à OCDE. A coleta cobre a sobrevivência de 1 a 3 anos na base da OCDE; por isso a mediana termina no terceiro ano.</p>
         </aside>
       </div>
       <article class="card">
@@ -196,10 +198,20 @@
           </div>
         </aside>
       </div>
+      <article class="card limits-card">
+        <div class="card__header"><div><h3>Limitações</h3><p>O que os resultados permitem e não permitem afirmar</p></div></div>
+        <ul class="limits">
+          <li><strong>Doing Business.</strong> Horas e número de pagamentos de tributos, carga sobre o lucro, tempo para abrir empresa e recuperação na insolvência referem-se a uma empresa hipotética padronizada, de porte médio, e não a microempresas reais. O Banco Mundial descontinuou a publicação em 2021, após identificar irregularidades nos dados das edições de 2018 e 2020.</li>
+          <li><strong>Recortes não independentes.</strong> Os recortes compartilham países e, em parte, os mesmos dados; não são confirmações separadas de um mesmo resultado.</li>
+          <li><strong>Brasil.</strong> O país entra apenas nos recortes A1 e B. No A1, a taxa brasileira vem do IBGE, cuja definição de morte de empresa difere da usada pela OCDE.</li>
+          <li><strong>Poder estatístico.</strong> Com 25 a 30 países, só correlações moderadas ou fortes são detectáveis; não encontrar associação não prova que ela não exista.</li>
+          <li><strong>Associação, não causa.</strong> O painel tem apenas efeitos fixos de coorte e, portanto, compara países, como as correlações. Os resultados são associações observacionais entre países e não se transferem automaticamente para o nível das empresas.</li>
+        </ul>
+      </article>
     </section>
   </main>
 
-  <footer><span>Iniciação Científica 2026 · Fatec Sebrae</span><span id="footer-date">Dados: OCDE, IBGE e Banco Mundial</span></footer>
+  <footer><span>Iniciação Científica 2026 · Fatec Sebrae · Paulo Henrique Bonora Futagawa, Thaís Cristina Arakaki Nakazone e Nathane de Castro · <a href="https://github.com/thaisnakazone/IC-2026" target="_blank" rel="noopener">código e dados</a></span><span id="footer-date">Dados: OCDE, IBGE e Banco Mundial</span></footer>
   <div id="tooltip" class="tooltip" role="status" aria-live="polite"></div>
   <script src="assets/data.js"></script>
   <script src="assets/app.js"></script>
