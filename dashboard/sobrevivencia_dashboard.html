@@ -179,11 +179,11 @@ select { min-width: 230px; max-width: 100%; padding: 9px 12px; color: var(--ink)
 .evidence-key dt { margin: 0; }
 .evidence-key dd { margin: 4px 0 0; color: var(--muted); font-size: .78rem; line-height: 1.5; }
 .badge { display: inline-block; padding: 3px 8px; border-radius: 6px; font-size: .7rem; font-weight: 800; white-space: nowrap; border: 1px solid var(--line); background: var(--card); color: var(--ink); }
-.badge::before { content: ""; display: inline-block; width: 8px; height: 8px; margin-right: 5px; border-radius: 50%; vertical-align: 0; }
-.badge--robusta::before { background: var(--teal); }
-.badge--sugestiva::before { background: var(--teal); opacity: .55; }
-.badge--sinal::before { border: 2px solid var(--gray-mark); width: 4px; height: 4px; }
-.badge--inconsistente::before { background: var(--gray-mark); opacity: .4; }
+.badge::before { content: "–"; display: inline-block; margin-right: 5px; font-weight: 800; color: var(--muted); }
+.badge--robusta::before { content: "★"; color: var(--accent-text); }
+.badge--sugestiva::before { content: "☆"; color: var(--accent-text); }
+.badge--sinal::before { content: "="; }
+.badge--inconsistente::before { content: "±"; }
 .heatmap-card { padding-bottom: 14px; }
 .scale-legend { display: flex; align-items: center; gap: 8px; color: var(--muted); font-size: .72rem; }
 .scale-bar { display: inline-block; width: 150px; height: 10px; border-radius: 3px; background: linear-gradient(90deg, var(--orange), var(--neutral-cell), var(--teal)); }
@@ -378,13 +378,13 @@ footer a { color: inherit; }
         <article class="card chart-card">
           <div class="card__header">
             <div><h3 id="scatter-title">—</h3><p id="scatter-sub">—</p></div>
-            <span class="legend"><i class="sw sw--brazil"></i>Brasil <i class="sw sw--oecd"></i>OCDE</span>
+            <span class="legend">Cada ponto é um país: <i class="sw sw--brazil"></i>Brasil <i class="sw sw--oecd"></i>país da OCDE</span>
           </div>
           <div id="scatter-chart" class="scatter-wrap"></div>
           <p class="chart-note" id="stability-note">—</p>
         </article>
         <aside class="card">
-          <div class="card__header"><div><h3>Como ler</h3><p>Critério de classificação</p></div></div>
+          <div class="card__header"><div><h3>Como ler a classificação</h3><p>Etiqueta de cada fator na coluna “Classificação” da tabela abaixo.</p></div></div>
           <dl class="evidence-key">
             <dt><span class="badge badge--robusta">Robusta</span></dt><dd>Mesmo sinal em todos os recortes, p &lt; 0,05 em 3 ou mais e q &lt; 0,10 no painel ou em A1.</dd>
             <dt><span class="badge badge--sugestiva">Sugestiva</span></dt><dd>Mesmo sinal em todos os recortes e p &lt; 0,05 em 2 deles.</dd>

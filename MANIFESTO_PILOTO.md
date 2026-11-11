@@ -1,7 +1,7 @@
 # Conteúdo do pacote do piloto
 
 - `dashboard/`: site estático pronto para hospedagem pública.
-- `dashboard/sobrevivencia_dashboard_piloto.html`: edição em arquivo único, pronta para abrir.
+- `dashboard/sobrevivencia_dashboard_piloto.html`: edição em arquivo único do piloto. Foi retirada do repositório, porque os números do piloto diferem dos do relatório final; a geração desse arquivo está desativada em `src/build_survival_pilot.py`.
 - `src/build_survival_pilot.py`: harmonização, análise e geração dos dados do dashboard.
 - `data/raw/survival/`: transcrição rastreável das tabelas oficiais do IBGE e da OCDE.
 - `data/processed/survival/`: fatos harmonizados, corte comparável e matriz de cobertura.

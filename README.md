@@ -134,5 +134,5 @@ docs/                        arquitetura do dashboard
 
 Versões anteriores do projeto ficam no repositório apenas como registro e não são usadas no relatório final:
 
-- **Piloto de sobrevivência** (`src/build_survival_pilot.py`, `tests/test_survival_pilot.py`, `data/*/survival/`, `analysis/survival/`, `dashboard/sobrevivencia_dashboard_piloto.html`, `MANIFESTO_PILOTO.md`): usava a tabela transcrita de um relatório da OCDE e escores de 2020–2023, posteriores às coortes.
+- **Piloto de sobrevivência** (`src/build_survival_pilot.py`, `tests/test_survival_pilot.py`, `data/*/survival/`, `analysis/survival/`, `MANIFESTO_PILOTO.md`): usava a tabela transcrita de um relatório da OCDE e escores de 2020–2023, posteriores às coortes.
 - **Primeiro ciclo** (painel país-ano de dez países, 2013–2024, com densidade de novos negócios como desfecho): restou apenas `data/processed/painel_principal_2013_2024.csv`; os scripts desse ciclo não fazem parte deste pacote.
