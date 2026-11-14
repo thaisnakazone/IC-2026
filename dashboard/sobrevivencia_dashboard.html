@@ -616,7 +616,7 @@ window.DASHBOARD_DATA = {"meta":{"title":"Sobrevivência de empresas empregadora
       `${nSig} tiveram p &lt; 0,05; só por acaso, seriam esperados cerca de ${Math.round(nTests * 0.05)}. ` +
       (minQ >= 0.1 ? `Nenhum permanece significativo após a correção de Benjamini–Hochberg (menor q = ${fmt(minQ, 2)}). ` : "") +
       "Os recortes usam os mesmos países e, em parte, os mesmos dados: não são confirmações independentes.";
-    $("#kpi-panel").textContent = `${m.panel.n_obs} coortes`;
+    $("#kpi-panel").textContent = `${m.panel.n_obs} observações`;
     $("#kpi-panel-sub").textContent = `${m.panel.n_countries} países · coortes ${m.panel.cohorts[0]}–${m.panel.cohorts.at(-1)}`;
     const [y, mo, d] = m.updated.split("-");
     $("#footer-date").textContent = `Dados: OCDE, IBGE e Banco Mundial · coletados em ${d}/${mo}/${y}`;
