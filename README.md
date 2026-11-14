@@ -2,7 +2,7 @@
 
 > 📊 **Acesse o dashboard:** [thaisnakazone.github.io/IC-2026](https://thaisnakazone.github.io/IC-2026/)
 
-Repositório de dados, código e dashboard da iniciação científica **“Complexidade tributária e sobrevivência de empresas empregadoras: o Brasil em perspectiva comparada com países da OCDE utilizando ciência de dados”**, desenvolvida no Programa de Iniciação Científica 2026 da Fatec Sebrae. O estudo relaciona fatores do ambiente de negócios, com ênfase nos tributários, à sobrevivência das empresas empregadoras no Brasil e em países da OCDE.
+Repositório de dados, código e dashboard da iniciação científica **“Fatores associados à sobrevivência de empresas empregadoras: o Brasil em perspectiva comparada com países da OCDE”**, desenvolvida no Programa de Iniciação Científica 2026 da Fatec Sebrae. O estudo relaciona fatores do ambiente de negócios, com ênfase nos tributários, à sobrevivência das empresas empregadoras no Brasil e em países da OCDE.
 
 ## Equipe
 
